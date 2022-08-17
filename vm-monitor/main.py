@@ -49,21 +49,10 @@ def list_all_instances() -> Dict[str, Iterable[compute_v1.Instance]]:
     request.max_results = 5000
     agg_list = instance_client.aggregated_list(request=request)
     all_instances = {}
-    # print("Instances found:")
-    # Despite using the `max_results` parameter, you don't need to handle the pagination
-    # yourself. The returned `AggregatedListPager` object handles pagination
-    # automatically, returning separated pages as you iterate over the results.
     for zone, response in agg_list:
         if response.instances:
-            # all_instances[zone] = response.instances
-            # print(f" {zone}:")
             for instance in response.instances:
-                # pass
-                # print(f" - {instance.name} ({instance.network_interfaces})")
-                # print(f" - {instance.name} ({instance.machine_type})")
                 for ips in instance.network_interfaces:
-                    # print(instance.id, ips.network_i_p)
-                    # for instance.id, ips.network_i_p in dict.items():
                     all_instances[instance.id] = instance.name + "|" + ips.network_i_p
     # 返回一个字典，key为实例ID，value为实例名+内网IP
     return all_instances
